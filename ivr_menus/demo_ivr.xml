@@ -1,0 +1,87 @@
+<include>
+  <!-- demo IVR setup -->
+  <!-- demo IVR, Main Menu 
+<menu name="ivr-test"
+  greet-long="/usr/local/freeswitch/sounds/greetings.wav"
+      greet-short="phrase:demo_ivr_main_menu_short"
+      invalid-sound="ivr/ivr-that_was_an_invalid_entry.wav"
+  timeout="10000"
+  inter-digit-timeout="2000"
+  max-failures="10000"
+  max-timeouts="20000"
+  digit-len="1">
+    <entry action="menu-exec-app" digits="1" param="transfer 148148 XML default"/>    
+      <entry action="menu-exec-app" digits="2" param="bridge sofia/internal/1002%10.10.10.10"/>
+      <entry action="menu-exec-app" digits="3" param="bridge sofia/internal/1003%10.10.10.10"/>
+        greet-long="https://www.call2all.co.il/ym/api/DownloadFile?token=033080482:1791&path=ivr2:99/3/3/M1000.wav"
+      greet-short="m1000.wav"
+    greet-short="phrase:demo_ivr_sub_menu_short"
+</menu>
+-->
+	<menu name="demo_ivr"
+        greet-long="http_cache://https://www.call2all.co.il/ym/api/DownloadFile?token=0795400997:987654&path=ivr2:99/000.wav"
+  timeout="10000"
+  inter-digit-timeout="2000"
+  max-failures="10000"
+  max-timeouts="20000"
+  digit-len="1">
+    <!-- The following are the definitions for the digits the user dials -->
+    <!-- Digit 1 transfer caller to the public FreeSWITCH conference -->
+    <entry action="menu-exec-app" digits="1" param="socket 0.0.0.0:8085/play?root=demo_ivr&file=0795400997/root/yd/1/ async full"/>
+    <entry action="menu-exec-app" digits="0" param="socket 0.0.0.0:8085/play?root=demo_ivr&file=033080482/root/yd/0 async full"/>
+    <entry action="menu-exec-app" digits="2" param="socket 0.0.0.0:8085/play?root=demo_ivr&file=033080482/root/yd/0 async full"/>
+        <!--  <entry action="menu-exec-app" digits="2" param="socket 127.0.0.1:8085/add?token=033080482%3A1791&templateId=842580&phone=${caller_id_number} async full"/>-->
+        <!--    <entry action="menu-top" digits="9"/>          Repeat this menu -->
+                          <entry action="menu-exec-app" digits="8" param="voicemail default ${domain_name} 1001"/>
+ <entry action="menu-sub" digits="9" param="list"/>  <!-- demo sub menu -->
+ <entry action="menu-sub" digits="7" param="topnews"/>  <!-- demto sub menu -->
+
+ <entry action="menu-sub" digits="3" param="live"/>  <!-- demo sub menu -->
+</menu>
+<menu name="topnews"
+    greet-long="http_cache://https://www.call2all.co.il/ym/api/DownloadFile?token=0795400997:987654&path=ivr2:99/003.wav"
+        timeout="15000"
+        max-failures="3">
+      <entry action="menu-top" digits="*"/>
+    <entry action="menu-exec-app" digits="1" param="socket 0.0.0.0:8085/play?root=demo_ivr&file=TopNews/barama/ async full"/>
+    <entry action="menu-exec-app" digits="2" param="socket 0.0.0.0:8085/play?root=demo_ivr&file=TopNews/chai/ async full"/>
+      </menu>
+    <!--  <entry action="menu-exec-app" digits="2" param="playback shout://kb.cdnwz.net/kol_barama"/>-->
+<menu name="live"
+    greet-long="http_cache://https://www.call2all.co.il/ym/api/DownloadFile?token=0795400997:987654&path=ivr2:99/003.wav"
+        timeout="15000"
+        max-failures="3">
+      <entry action="menu-top" digits="*"/>
+      <entry action="menu-exec-app" digits="1" param="playback local_stream://moh/shout/93fm"/>
+      <entry action="menu-exec-app" digits="2" param="playback local_stream://moh/shout/barama"/>
+      <entry action="menu-exec-app" digits="3" param="playback local_stream://moh/shout/restb"/>
+      </menu>
+<menu name="list"
+    greet-long="http_cache://https://www.call2all.co.il/ym/api/DownloadFile?token=0795400997:987654&path=ivr2:99/001.wav"
+        timeout="15000"
+        max-failures="3">
+      <entry action="menu-top" digits="*"/>
+    <entry action="menu-exec-app" digits="1" param="socket 0.0.0.0:8085/add?user=0795400997&pass=987654&templateId=551707 async full"/>
+    <entry action="menu-exec-app" digits="2" param="socket 0.0.0.0:8085/remove?user=0795400997&pass=987654&templateId=551707 async full"/>
+      </menu>
+</include>
+
+  <!-- Demo IVR, Sub Menu -->
+
+
+<!-- TTS sample; non-functional but it demonstrates say: and TTS -->
+<!--
+  <menu name="demo3"
+      greet-long="say:Press 1 to join the conference, Press 2 to join the other conference"
+      greet-short="say:Press 1 to join the conference, Press 2 to join the other conference"
+      invalid-sound="say:invalid extension"
+      exit-sound="say:exit sound"
+      timeout ="15000"
+      max-failures="3">
+    <entry action="menu-exit" digits="*"/>
+    <entry action="menu-play-sound" digits="1" param="say:You pressed 1"/>
+    <entry action="menu-exec-app" digits="2" param="transfert 1000 XML default"/>
+    <entry action="menu-exec-app" digits="3" param="transfert 1001 XML default"/>
+  </menu>
+-->
+</include>
